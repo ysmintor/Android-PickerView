@@ -1,9 +1,11 @@
 package com.bigkoo.pickerviewdemo.bean;
 
+import com.bigkoo.pickerview.model.IPickerViewData;
+
 /**
  * Created by Sai on 15/11/22.
  */
-public class ProvinceBean {
+public class ProvinceBean implements IPickerViewData {
     private long id;
     private String name;
     private String description;
@@ -48,9 +50,9 @@ public class ProvinceBean {
         this.others = others;
     }
 
-    //这个用来显示在PickerView上面的字符串,PickerView会通过反射获取getPickerViewText方法显示出来。
+    //这个用来显示在PickerView上面的字符串,PickerView会通过getPickerViewText方法获取字符串显示出来。
+    @Override
     public String getPickerViewText() {
-        //这里还可以判断文字超长截断再提供显示
         return name;
     }
 }

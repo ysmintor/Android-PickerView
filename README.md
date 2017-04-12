@@ -35,6 +35,12 @@
 ### 有兴趣研究3D滚轮效果的实现机制，希望把源码研究透彻的可以看看这篇博客：
 ### [Android-PickerView系列之源码解析篇（二）](http://blog.csdn.net/qq_22393017/article/details/59488906)
 
+### V3.2.4版本更新说明（2017-4-7）
+* 修复：修复偶尔会出现item滑到第一项或最后一项时滑出边界的情况 。
+
+### V3.2.3版本更新说明（2017-3-31）
+* 优化：滚轮边界处理优化，解决滑动到第一项或最后一项时会跳动的情况。
+* 优化：Dialog 模式 下PickerView的弹出和关闭添加了缩放动画，优化视觉效果。
 
 ### V3.2.2版本更新说明（2017-3-24）
 * 新增：isCenterLabel（boolean isCenter）方法，该方法默认为true，只在选中项显示label；填false 则每项item后面都会带有label。
@@ -45,13 +51,11 @@
 * 新增：optionsPicker 的 setNPicker 方法，用于多级不联动情况下，条件选择器的显示。
 * 修复：在某些极端情况下，快速滑动并还未停止时就点击确定按钮，导致数据匹配不当造成应用崩溃的问题。
 
-### V3.1.3版本更新说明（2017-3-21）
-* 修复：timepicker 未设置setDate() 导致空指针异常问题
-* 修复：dialog 模式 setOnDismissListener 监听无效问题
+
 
 #### 更多历史版本详情，请查阅：[更新说明（3.x版本）](https://github.com/Bigkoo/Android-PickerView/wiki/%E6%9B%B4%E6%96%B0%E8%AF%B4%E6%98%8E%EF%BC%883.x%E7%89%88%E6%9C%AC%EF%BC%89) 
 
-#### 方法名与参数请查阅：[方法名与参数说明文档](https://github.com/Bigkoo/Android-PickerView/wiki/%E6%96%B9%E6%B3%95%E5%90%8D%E4%B8%8E%E5%8F%82%E6%95%B0)
+#### 方法名与参数请查阅：[方法名与参数说明文档](https://github.com/Bigkoo/Android-PickerView/wiki/%E6%96%B9%E6%B3%95%E5%90%8D%E4%B8%8E%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E%EF%BC%883.x%E7%89%88%E6%9C%AC%EF%BC%89)
 
 </br>
 
@@ -59,7 +63,7 @@
 
 #### 1.添加Jcenter仓库 Gradle依赖：
 ```java
-compile 'com.contrarywind:Android-PickerView:3.2.2'
+compile 'com.contrarywind:Android-PickerView:3.2.4'
 ```
 或者
 
@@ -68,7 +72,7 @@ compile 'com.contrarywind:Android-PickerView:3.2.2'
 <dependency>
 <groupId>com.contrarywind</groupId>
 <artifactId>Android-PickerView</artifactId>
-<version>3.2.2</version>
+<version>3.2.4</version>
 <type>pom</type>
 </dependency>
 ```

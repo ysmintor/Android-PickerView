@@ -31,7 +31,7 @@ and support for the linkage, dialog . It's very easy to use ,  you also can cust
 ### Gradle
 
 ```java
-compile 'com.contrarywind:Android-PickerView:3.2.2'
+compile 'com.contrarywind:Android-PickerView:3.2.4'
 ```
 
 ### Maven
@@ -40,7 +40,7 @@ compile 'com.contrarywind:Android-PickerView:3.2.2'
 <dependency>
 <groupId>com.contrarywind</groupId>
 <artifactId>Android-PickerView</artifactId>
-<version>3.2.2</version>
+<version>3.2.4</version>
 <type>pom</type>
 </dependency>
 ```
@@ -110,7 +110,6 @@ If the default style does not meet your expectations, You can also customize att
                 .setCancelColor(Color.BLUE)
                 .setTitleBgColor(0xFF666666)//Night mode
                 .setBgColor(0xFF333333)//Night mode
-                .setRange(calendar.get(Calendar.YEAR) - 20, calendar.get(Calendar.YEAR) + 20)//default 1900-2100 years
                 .setDate(selectedDate)// default is System time
                 .setRangDate(startDate,endDate)
                 .setLabel("year","month","day","hours","mins","seconds")
@@ -216,7 +215,7 @@ pvNoLinkOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOp
         pvNoLinkOptions.show();
 ```
 
-## For more detail, pelase refer to the Demo code, If there is still doubt about you, pelase [New Issue](https://github.com/Bigkoo/Android-PickerView/issues) to me
+## For more detail, pelase refer to the Demo code, If there is still doubt about you, pelase [New Issue](https://github.com/Bigkoo/Android-PickerView/issues) 
 
 ###  [Here is demo code](https://github.com/Bigkoo/Android-PickerView/blob/master/app/src/main/java/com/bigkoo/pickerviewdemo/MainActivity.java)
 

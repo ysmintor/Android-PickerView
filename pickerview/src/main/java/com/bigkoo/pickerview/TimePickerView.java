@@ -5,13 +5,14 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.lib.WheelView;
+import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.view.BasePickerView;
 import com.bigkoo.pickerview.view.WheelTime;
 
@@ -28,16 +29,12 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
     private int layoutRes;
     private CustomListener customListener;
 
-    public enum Type {
-        ALL, YEAR_MONTH_DAY, HOURS_MINS, MONTH_DAY_HOUR_MIN, YEAR_MONTH, YEAR_MONTH_DAY_HOUR_MIN
-    } // 六种选择模式，年月日时分秒，年月日，时分，月日时分，年月，年月日时分
-
     WheelTime wheelTime; //自定义控件
     private Button btnSubmit, btnCancel; //确定、取消按钮
     private TextView tvTitle;//标题
     private OnTimeSelectListener timeSelectListener;//回调接口
     private int gravity = Gravity.CENTER;//内容显示位置 默认居中
-    private TimePickerView.Type type;// 显示类型
+    private boolean[] type;// 显示类型
 
     private String Str_Submit;//确定按钮字符串
     private String Str_Cancel;//取消按钮字符串
@@ -62,11 +59,12 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
 
     private boolean cyclic;//是否循环
     private boolean cancelable;//是否能取消
-    private boolean isCenterLabel ;//是否只显示中间的label
+    private boolean isCenterLabel;//是否只显示中间的label
 
     private int textColorOut; //分割线以外的文字颜色
     private int textColorCenter; //分割线之间的文字颜色
     private int dividerColor; //分割线的颜色
+    private int backgroundId; //显示时的外部背景色颜色,默认是灰色
 
     // 条目间距倍数 默认1.6
     private float lineSpacingMultiplier = 1.6F;
@@ -116,6 +114,8 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
         this.lineSpacingMultiplier = builder.lineSpacingMultiplier;
         this.isDialog = builder.isDialog;
         this.dividerType = builder.dividerType;
+        this.backgroundId = builder.backgroundId;
+        this.decorView = builder.decorView;
         initView(builder.context);
     }
 
@@ -126,8 +126,7 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
         private CustomListener customListener;
         private Context context;
         private OnTimeSelectListener timeSelectListener;
-
-        private TimePickerView.Type type = Type.ALL;//显示类型 默认全部显示
+        private boolean[] type = new boolean[]{true, true, true, true, true, true};//显示类型 默认全部显示
         private int gravity = Gravity.CENTER;//内容显示位置 默认居中
 
         private String Str_Submit;//确定按钮文字
@@ -152,11 +151,14 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
 
         private boolean cyclic = false;//是否循环
         private boolean cancelable = true;//是否能取消
+
         private boolean isCenterLabel = true ;//是否只显示中间的label
+        public ViewGroup decorView ;//显示pickerview的根View,默认是activity的根view
 
         private int textColorOut; //分割线以外的文字颜色
         private int textColorCenter; //分割线之间的文字颜色
         private int dividerColor; //分割线的颜色
+        private int backgroundId; //显示时的外部背景色颜色,默认是灰色
         private WheelView.DividerType dividerType;//分隔线类型
         // 条目间距倍数 默认1.6
         private float lineSpacingMultiplier = 1.6F;
@@ -172,7 +174,7 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
         }
 
         //Option
-        public Builder setType(TimePickerView.Type type) {
+        public Builder setType(boolean[] type) {
             this.type = type;
             return this;
         }
@@ -211,6 +213,16 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
             this.Color_Cancel = Color_Cancel;
             return this;
         }
+        /**
+         * 必须是viewgroup
+         * 设置要将pickerview显示到的容器id
+         * @param decorView
+         * @return
+         */
+        public Builder setDecorView(ViewGroup decorView) {
+            this.decorView = decorView;
+            return this;
+        }
 
         public Builder setBgColor(int Color_Background_Wheel) {
             this.Color_Background_Wheel = Color_Background_Wheel;
@@ -244,6 +256,7 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
 
         /**
          * 因为系统Calendar的月份是从0-11的,所以如果是调用Calendar的set方法来设置时间,月份的范围也要是从0-11
+         *
          * @param date
          * @return
          */
@@ -267,6 +280,7 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
         /**
          * 设置起始时间
          * 因为系统Calendar的月份是从0-11的,所以如果是调用Calendar的set方法来设置时间,月份的范围也要是从0-11
+         *
          * @return
          */
 
@@ -304,6 +318,16 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
          */
         public Builder setDividerType(WheelView.DividerType dividerType) {
             this.dividerType = dividerType;
+            return this;
+        }
+
+        /**
+         * //显示时的外部背景色颜色,默认是灰色
+         * @param backgroundId
+         */
+
+        public Builder setBackgroundId(int backgroundId) {
+            this.backgroundId = backgroundId;
             return this;
         }
 
@@ -361,7 +385,7 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
 
     private void initView(Context context) {
         setDialogOutSideCancelable(cancelable);
-        initViews();
+        initViews(backgroundId);
         init();
         initEvents();
         if (customListener == null) {
@@ -434,14 +458,13 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
     }
 
 
-
     /**
      * 设置默认时间
      */
-   public void setDate(Calendar date) {
-       this.date = date;
-       setTime();
-   }
+    public void setDate(Calendar date) {
+        this.date = date;
+        setTime();
+    }
 
     /**
      * 设置可以选择的时间范围, 要在setTime之前调用才有效果
@@ -460,8 +483,8 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
         //如果设置了时间范围
         if (startDate != null && endDate != null) {
             //判断一下默认时间是否设置了，或者是否在起始终止时间范围内
-            if (date == null||date.getTimeInMillis() < startDate.getTimeInMillis()
-                    || date.getTimeInMillis() > endDate.getTimeInMillis()){
+            if (date == null || date.getTimeInMillis() < startDate.getTimeInMillis()
+                    || date.getTimeInMillis() > endDate.getTimeInMillis()) {
                 date = startDate;
             }
         } else if (startDate != null) {
@@ -476,7 +499,7 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
      * 设置选中时间,默认选中当前时间
      */
     private void setTime() {
-        int year,month,day,hours,minute,seconds;
+        int year, month, day, hours, minute, seconds;
 
         Calendar calendar = Calendar.getInstance();
         if (date == null) {
@@ -499,8 +522,6 @@ public class TimePickerView extends BasePickerView implements View.OnClickListen
 
         wheelTime.setPicker(year, month, day, hours, minute, seconds);
     }
-
-
 
 
     @Override

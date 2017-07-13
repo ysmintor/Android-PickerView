@@ -80,6 +80,23 @@ compile 'com.contrarywind:Android-PickerView:3.2.5'
 ## Just so easy ~
 
 
+### Notes（2017-7-10）
+- when we start setting the date, we need to pay special attention.
+
+- reason: the internal component of the Calendar adds 1 processing, which made the month's number of  count reduced one.
+- error usage case:
+
+>StartDate.set (2013,1,1);
+
+>EndDate.set (2020,12,31);
+
+- correct use case:
+
+>StartDate.set (2013,0,1);
+
+>EndDate.set (2020,11,31);
+</br>
+
 
 If the default style does not meet your expectations, You can also customize attributes to apply
 
@@ -87,17 +104,17 @@ If the default style does not meet your expectations, You can also customize att
 ```java
  Calendar selectedDate = Calendar.getInstance();
  Calendar startDate = Calendar.getInstance();
- startDate.set(2013,1,1);
+ startDate.set(2013,0,1);
  Calendar endDate = Calendar.getInstance();
- endDate.set(2020,1,1);
+ endDate.set(2020,11,1);
 
  pvTime = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
             @Override
-            public void onTimeSelect(Date date,View v) {//Callback
+            public void onTimeSelect(Date date,View v) {//callback
                 tvTime.setText(getTime(date));
             }
         })
-                .setType(TimePickerView.Type.ALL)//default all
+                .setType(new boolean[]{false, false, false, true, true, false})// type of date 
                 .setCancelText("Cancel")
                 .setSubmitText("Sure")
                 .setContentSize(18)
@@ -108,8 +125,8 @@ If the default style does not meet your expectations, You can also customize att
                 .setTitleColor(Color.BLACK)
                 .setSubmitColor(Color.BLUE)
                 .setCancelColor(Color.BLUE)
-                .setTitleBgColor(0xFF666666)//Night mode
-                .setBgColor(0xFF333333)//Night mode
+                .setTitleBgColor(0xFF666666)//night mode
+                .setBgColor(0xFF333333)//night mode
                 .setRangDate(startDate,endDate)
                 .setLabel("year","month","day","hours","mins","seconds")
                 .build();
@@ -134,8 +151,8 @@ pvOptions = new  OptionsPickerView.Builder(this, new OptionsPickerView.OnOptions
                 .setTitleColor(Color.BLACK)
                 .setSubmitColor(Color.BLUE)
                 .setCancelColor(Color.BLUE)
-                .setTitleBgColor(0xFF666666)//Night mode
-                .setBgColor(0xFF444444)//Night mode
+                .setTitleBgColor(0xFF666666)//night mode
+                .setBgColor(0xFF444444)//night mode
                 .setContentTextSize(18)
                 .setLinkage(false)
                 .isCenterLabel(false) //default is true , if you choose false , the label text will add to all item ContentText right
@@ -166,7 +183,7 @@ pvOptions = new  OptionsPickerView.Builder(this, new OptionsPickerView.OnOptions
             public void onTimeSelect(Date date, View v) {//call back
                 btn_CustomTime.setText(getTime(date));
             }
-        })      .setType(TimePickerView.Type.YEAR_MONTH_DAY)
+        })       .setType(new boolean[]{true, true, true, false, false, false})// year - month - day
                 .setDate(selectedDate)
                 .setRangDate(startDate,endDate)
                 .setLayoutRes(R.layout.pickerview_custom_time, new CustomListener() {
@@ -195,7 +212,7 @@ pvOptions = new  OptionsPickerView.Builder(this, new OptionsPickerView.OnOptions
     }
 ```
 
-## If you do need to set the no linkage data：
+## If you need to set the non-linkage data：
 
 ```java
 pvNoLinkOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {

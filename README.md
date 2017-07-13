@@ -35,6 +35,16 @@
 ### 有兴趣研究3D滚轮效果的实现机制，希望把源码研究透彻的可以看看这篇博客：
 ### [Android-PickerView系列之源码解析篇（二）](http://blog.csdn.net/qq_22393017/article/details/59488906)
 
+### 使用注意事项（2017-7-10）
+* 注意：当我们进行设置时间的启始位置时，需要特别注意
+* 原因：组件内部对月份进行了加1 处理，并且结束日期 设置为 最后月份的天数
+* 错误使用案例： 
+  startDate.set(2013,1,1);
+  endDate.set(2020,12,1);
+* 正确使用案例：
+  startDate.set(2013,0,1);
+  endDate.set(2020,11,31);
+  
 ### V3.2.5版本更新说明（2017-5-15）
 * 优化：年月日时分秒 从枚举类型改为boolean 数组，分别控制它们的显示与否。
 * 新增：setBackgroundId方法，原本是默认灰色，新增此方法，可根据实际需求自由定制背景遮罩颜色。
@@ -118,9 +128,13 @@ TimePickerView pvTime = new TimePickerView.Builder(this, new TimePickerView.OnTi
 ```java
  Calendar selectedDate = Calendar.getInstance();
  Calendar startDate = Calendar.getInstance();
- startDate.set(2013,1,1);
+ //startDate.set(2013,1,1);
  Calendar endDate = Calendar.getInstance();
- endDate.set(2020,1,1);
+ //endDate.set(2020,1,1);
+ 
+  //正确设置方式 原因：注意事项有说明
+  startDate.set(2013,0,1);
+  endDate.set(2020,11,31);
 
  pvTime = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
             @Override
@@ -128,7 +142,7 @@ TimePickerView pvTime = new TimePickerView.Builder(this, new TimePickerView.OnTi
                 tvTime.setText(getTime(date));
             }
         })
-                .setType(TimePickerView.Type.ALL)//默认全部显示
+                .setType(new boolean[]{true, true, true, true, true, true})// 默认全部显示
                 .setCancelText("Cancel")//取消按钮文字
                 .setSubmitText("Sure")//确认按钮文字
                 .setContentSize(18)//滚轮文字大小
@@ -143,7 +157,7 @@ TimePickerView pvTime = new TimePickerView.Builder(this, new TimePickerView.OnTi
                 .setBgColor(0xFF333333)//滚轮背景颜色 Night mode
                 .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
                 .setRangDate(startDate,endDate)//起始终止年月日设定
-                .setLabel("年","月","日","时","分","秒")
+                .setLabel("年","月","日","时","分","秒")//默认设置为年月日时分秒
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .isDialog(true)//是否显示为对话框样式
                 .build();

@@ -1,6 +1,14 @@
 
 # Android-PickerView
 
+
+
+[![API](https://img.shields.io/badge/API-9%2B-brightgreen.svg)](https://android-arsenal.com/api?level=9) 
+[![license](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+
+#### Show some :heart: and :stars: the repo to support the project
+[![GitHub stars](https://img.shields.io/github/stars/Bigkoo/Android-PickerView.svg?style=social)](https://github.com/Bigkoo/Android-PickerView/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Bigkoo/Android-PickerView.svg?style=social)](https://github.com/Bigkoo/Android-PickerView/network) [![GitHub watchers](https://img.shields.io/github/watchers/Bigkoo/Android-PickerView.svg?style=social)](https://github.com/Bigkoo/Android-PickerView/watchers)
+
 #### [中文文档](https://github.com/Bigkoo/Android-PickerView/blob/master/README.md)
 
 ## Introduction
@@ -31,7 +39,7 @@ and support for the linkage, dialog . It's very easy to use ,  you also can cust
 ### Gradle
 
 ```java
-compile 'com.contrarywind:Android-PickerView:3.2.5'
+compile 'com.contrarywind:Android-PickerView:3.2.7'
 ```
 
 ### Maven
@@ -40,7 +48,7 @@ compile 'com.contrarywind:Android-PickerView:3.2.5'
 <dependency>
 <groupId>com.contrarywind</groupId>
 <artifactId>Android-PickerView</artifactId>
-<version>3.2.5</version>
+<version>3.2.7</version>
 <type>pom</type>
 </dependency>
 ```
@@ -231,7 +239,7 @@ pvNoLinkOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOp
         pvNoLinkOptions.show();
 ```
 
-## For more detail, pelase refer to the Demo code, If there is still doubt about you, pelase [New Issue](https://github.com/Bigkoo/Android-PickerView/issues) 
+## For more detail, please refer to the Demo code, If there is still doubt about you, please [New Issue](https://github.com/Bigkoo/Android-PickerView/issues) 
 
 ###  [Here is demo code](https://github.com/Bigkoo/Android-PickerView/blob/master/app/src/main/java/com/bigkoo/pickerviewdemo/MainActivity.java)
 
